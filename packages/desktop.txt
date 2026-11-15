@@ -1,3 +1,4 @@
+flameshot
 bspwm
 sxhkd
 polybar
