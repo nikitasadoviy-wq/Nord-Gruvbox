@@ -1,0 +1,114 @@
+[
+  {
+    "id": "game_1",
+    "category": "Games",
+    "original": "Were it so easy.",
+    "translation": "Якби ж усе було так просто.",
+    "author": "Thel 'Vadam (Arbiter)",
+    "source": "Halo 3 (2007)"
+  },
+  {
+    "id": "game_2",
+    "category": "Games",
+    "original": "Wake me, when you need me.",
+    "translation": "Розбуди мене, коли я знадоблюся.",
+    "author": "Master Chief (John-117)",
+    "source": "Halo 3 (2007)"
+  },
+  {
+    "id": "game_3",
+    "category": "Games",
+    "original": "A man chooses, a slave obeys.",
+    "translation": "Людина обирає, раб кориться.",
+    "author": "Andrew Ryan",
+    "source": "BioShock (2007)"
+  },
+  {
+    "id": "game_4",
+    "category": "Games",
+    "original": "The right man in the wrong place can make all the difference in the world.",
+    "translation": "Потрібна людина не в тому місці здатна змінити весь світ.",
+    "author": "G-Man",
+    "source": "Half-Life 2 (2004)"
+  },
+  {
+    "id": "film_1",
+    "category": "Films",
+    "original": "All those moments will be lost in time, like tears in rain.",
+    "translation": "Усі ці миті зникнуть у часі, мов сльози під дощем.",
+    "author": "Roy Batty",
+    "source": "Blade Runner (1982)"
+  },
+  {
+    "id": "film_2",
+    "category": "Films",
+    "original": "Do not go gentle into that good night. Rage, rage against the dying of the light.",
+    "translation": "Не йди покірно в ту лагідну ніч. Бунтуй, лютуй проти згасання світла.",
+    "author": "Prof. John Brand",
+    "source": "Interstellar (2014)"
+  },
+  {
+    "id": "anime_1",
+    "category": "Anime",
+    "original": "If you win, you live. If you lose, you die. If you don't fight, you can't win!",
+    "translation": "Переможеш — житимеш. Програєш — помреш. Не боротимешся — не переможеш!",
+    "author": "Eren Yeager",
+    "source": "Attack on Titan"
+  },
+  {
+    "id": "anime_2",
+    "category": "Anime",
+    "original": "Whatever happens, happens.",
+    "translation": "Що буде, те й буде.",
+    "author": "Spike Spiegel",
+    "source": "Cowboy Bebop"
+  },
+  {
+    "id": "book_1",
+    "category": "Books",
+    "original": "Who controls the past controls the future. Who controls the present controls the past.",
+    "translation": "Хто контролює минуле, той контролює майбутнє. Хто контролює теперішнє, той контролює минуле.",
+    "author": "George Orwell",
+    "source": "1984 (1949)"
+  },
+  {
+    "id": "book_2",
+    "category": "Books",
+    "original": "I must not fear. Fear is the mind-killer.",
+    "translation": "Я не повинен боятися. Страх — убивця розуму.",
+    "author": "Frank Herbert",
+    "source": "Dune (1965)"
+  },
+  {
+    "id": "people_1",
+    "category": "Real People",
+    "original": "Talk is cheap. Show me the code.",
+    "translation": "Балачки нічого не варті. Покажи мені код.",
+    "author": "Linus Torvalds",
+    "source": "LKML (2000)"
+  },
+  {
+    "id": "people_2",
+    "category": "Real People",
+    "original": "Simplicity is about subtracting the obvious and adding the meaningful.",
+    "translation": "Простота полягає у відніманні очевидного та додаванні змістовного.",
+    "author": "John Maeda",
+    "source": "The Laws of Simplicity"
+  },
+  {
+    "id": "tech_1",
+    "category": "Technology",
+    "original": "Any sufficiently advanced technology is indistinguishable from magic.",
+    "translation": "Будь-яка достатньо розвинена технологія не відрізняється від магії.",
+    "author": "Arthur C. Clarke",
+    "source": "Profiles of the Future (1962)"
+  },
+  {
+    "id": "tech_2",
+    "category": "Technology",
+    "original": "Premature optimization is the root of all evil.",
+    "translation": "Передчасна оптимізація — корінь усього зла.",
+    "author": "Donald Knuth",
+    "source": "The Art of Computer Programming"
+  }
+]

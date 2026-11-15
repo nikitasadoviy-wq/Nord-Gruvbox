@@ -1,0 +1,5 @@
+nvidia-dkms
+nvidia-utils
+amd-ucode
+brightnessctl
+power-profiles-daemon

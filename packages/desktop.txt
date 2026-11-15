@@ -1,0 +1,10 @@
+bspwm
+sxhkd
+polybar
+picom
+rofi
+dunst
+feh
+alacritty
+maim
+xclip

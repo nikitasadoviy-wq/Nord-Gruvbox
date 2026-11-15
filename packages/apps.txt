@@ -1,0 +1,7 @@
+firefox
+btop
+thunar
+mpv
+pavucontrol
+fastfetch
+cava

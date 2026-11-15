@@ -1,0 +1,173 @@
+* {
+  all: unset;
+  font-family: "JetBrainsMono Nerd Font", sans-serif;
+}
+
+.dashboard-container {
+  background-color: #1d2021;
+  border: 2px solid #81a1c1;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.card {
+  background-color: #282828;
+  border: 1px solid #3c3836;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.clock-time {
+  font-size: 28px;
+  font-weight: bold;
+  color: #88c0d0;
+}
+
+.clock-date {
+  font-size: 13px;
+  color: #ebdbb2;
+  margin-top: 2px;
+}
+
+.user-tag {
+  font-size: 12px;
+  color: #81a1c1;
+  margin-top: 6px;
+}
+
+.stat-icon {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.nord-blue { color: #81a1c1; }
+.gruvbox-yellow { color: #fabd2f; }
+
+.stat-val {
+  font-size: 13px;
+  color: #ebdbb2;
+}
+
+scale trough {
+  background-color: #3c3836;
+  border-radius: 6px;
+  min-height: 8px;
+  margin: 4px 0 8px 0;
+}
+
+.bar-cpu highlight {
+  background-color: #81a1c1;
+  border-radius: 6px;
+}
+
+.bar-ram highlight {
+  background-color: #fabd2f;
+  border-radius: 6px;
+}
+
+.app-btn, .pwr-btn {
+  background-color: #3c3836;
+  color: #ebdbb2;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.app-btn:hover {
+  background-color: #5e81ac;
+  color: #1d2021;
+}
+
+.pwr-btn.off:hover { background-color: #fb4934; color: #1d2021; }
+.pwr-btn.reboot:hover { background-color: #fabd2f; color: #1d2021; }
+.pwr-btn.lock:hover { background-color: #81a1c1; color: #1d2021; }
+
+/* Quote Library Styling (Gruvbox Dark + Nord Blue) */
+.quote-card {
+  border: 1px solid #5e81ac;
+  background-color: #282828;
+}
+
+.cat-btn {
+  background-color: #32302f;
+  color: #a89984;
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.cat-btn:hover {
+  background-color: #3c3836;
+  color: #ebdbb2;
+}
+
+.cat-btn.active {
+  background-color: #5e81ac;
+  color: #1d2021;
+}
+
+.cat-btn.fav-tab.active {
+  background-color: #fabd2f;
+  color: #1d2021;
+}
+
+.quote-body {
+  background-color: #1d2021;
+  border-left: 3px solid #88c0d0;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.quote-original {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ebdbb2;
+}
+
+.quote-translation {
+  font-size: 13px;
+  font-style: italic;
+  color: #88c0d0;
+  margin-top: 4px;
+}
+
+.quote-author {
+  font-size: 13px;
+  font-weight: bold;
+  color: #fabd2f;
+}
+
+.quote-source {
+  font-size: 11px;
+  color: #a89984;
+  margin-top: 2px;
+}
+
+.q-action-btn {
+  background-color: #3c3836;
+  color: #ebdbb2;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.q-action-btn:hover {
+  background-color: #504945;
+}
+
+.q-action-btn.fav-active {
+  background-color: #d79921;
+  color: #1d2021;
+}
+
+.q-action-btn.next-btn {
+  background-color: #81a1c1;
+  color: #1d2021;
+}
+
+.q-action-btn.next-btn:hover {
+  background-color: #88c0d0;
+}

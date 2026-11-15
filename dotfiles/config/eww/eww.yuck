@@ -1,0 +1,115 @@
+;; ============================================================
+;; Nord-Gruvbox Dashboard 2x2 + Quote Library Module
+;; ============================================================
+
+(defpoll sys_cpu :interval "2s" "~/.config/eww/scripts/sysinfo.sh cpu")
+(defpoll sys_ram :interval "2s" "~/.config/eww/scripts/sysinfo.sh ram")
+(defpoll sys_time :interval "1s" "date '+%H:%M'")
+(defpoll sys_date :interval "60s" "date '+%A, %d %B'")
+(defpoll sys_user :interval "3600s" "echo $USER@$(hostname)")
+
+;; Quote Library Reactive State (JSON object from local python backend)
+(defpoll quote_state :interval "300s" "~/.config/eww/scripts/quote_manager.py get")
+
+(defwidget header_widget []
+  (box :class "card header-card" :orientation "v" :space-evenly false :valign "center"
+    (label :class "clock-time" :text sys_time)
+    (label :class "clock-date" :text sys_date)
+    (label :class "user-tag" :text "  ${sys_user}")))
+
+(defwidget stats_widget []
+  (box :class "card stats-card" :orientation "v" :space-evenly true
+    (box :orientation "h" :space-evenly false
+      (label :class "stat-icon nord-blue" :text "󰻠 CPU ")
+      (label :class "stat-val" :text "${sys_cpu}%"))
+    (scale :min 0 :max 100 :active false :value sys_cpu :class "bar-cpu")
+    (box :orientation "h" :space-evenly false
+      (label :class "stat-icon gruvbox-yellow" :text "󰍛 RAM ")
+      (label :class "stat-val" :text "${sys_ram}%"))
+    (scale :min 0 :max 100 :active false :value sys_ram :class "bar-ram")))
+
+(defwidget quick_apps_widget []
+  (box :class "card apps-card" :orientation "v" :space-evenly true
+    (box :orientation "h" :space-evenly true :spacing 10
+      (button :class "app-btn" :onclick "alacritty &" "󰆍 Terminal")
+      (button :class "app-btn" :onclick "firefox &" "󰈹 Browser"))
+    (box :orientation "h" :space-evenly true :spacing 10
+      (button :class "app-btn" :onclick "alacritty -e yazi &" "󰉋 Files")
+      (button :class "app-btn" :onclick "alacritty -e btop &" "󰨇 Monitor"))))
+
+(defwidget power_widget []
+  (box :class "card power-card" :orientation "h" :space-evenly true :spacing 10
+    (button :class "pwr-btn lock" :onclick "eww close dashboard" "󰅖 Close")
+    (button :class "pwr-btn reboot" :onclick "systemctl reboot" "󰜉 Reboot")
+    (button :class "pwr-btn off" :onclick "systemctl poweroff" "󰐥 Power")))
+
+;; ============================================================
+;; QUOTE LIBRARY BLOCK (Below 2x2 Grid)
+;; ============================================================
+(defwidget quote_library_widget []
+  (box :class "card quote-card" :orientation "v" :space-evenly false :spacing 10
+    ;; Top Bar: Category Filter Pills
+    (box :class "quote-categories" :orientation "h" :space-evenly true :spacing 6
+      (button :class {quote_state.active_cat == "All" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'All')" "🌐 All")
+      (button :class {quote_state.active_cat == "Games" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Games')" "🎮 Games")
+      (button :class {quote_state.active_cat == "Films" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Films')" "🎬 Films")
+      (button :class {quote_state.active_cat == "Anime" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Anime')" "🎌 Anime")
+      (button :class {quote_state.active_cat == "Books" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Books')" "📚 Books")
+      (button :class {quote_state.active_cat == "Real People" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Real People')" "👤 People")
+      (button :class {quote_state.active_cat == "Technology" ? "cat-btn active" : "cat-btn"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Technology')" "💻 Tech")
+      (button :class {quote_state.active_cat == "Favorites" ? "cat-btn fav-tab active" : "cat-btn fav-tab"}
+              :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py category 'Favorites')" "★ Favs (${quote_state.fav_count})"))
+
+    ;; Quote Body: Original + Ukrainian Translation
+    (box :class "quote-body" :orientation "v" :space-evenly false :spacing 6
+      (label :class "quote-original"
+             :wrap true
+             :xalign 0
+             :text "«${quote_state.original}»")
+      (label :class "quote-translation"
+             :wrap true
+             :xalign 0
+             :text "${quote_state.translation}"))
+
+    ;; Footer: Author & Source + Controls (Next, Favorite)
+    (box :class "quote-footer" :orientation "h" :space-evenly false
+      (box :orientation "v" :hexpand true :space-evenly false
+        (label :class "quote-author" :xalign 0 :text "— ${quote_state.author}")
+        (label :class "quote-source" :xalign 0 :text "${quote_state.category_icon} ${quote_state.source}"))
+      (box :orientation "h" :spacing 8 :halign "end"
+        (button :class {quote_state.is_fav ? "q-action-btn fav-active" : "q-action-btn"}
+                :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py toggle_fav)"
+                {quote_state.is_fav ? "★ В обраному" : "☆ В обране"})
+        (button :class "q-action-btn next-btn"
+                :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py next)"
+                "↻ Наступна")))))
+
+(defwidget dashboard_layout []
+  (box :class "dashboard-container" :orientation "v" :space-evenly false :spacing 14
+    ;; 2x2 Grid Top Section
+    (box :class "grid-row" :orientation "h" :space-evenly true :spacing 14
+      (header_widget)
+      (stats_widget))
+    (box :class "grid-row" :orientation "h" :space-evenly true :spacing 14
+      (quick_apps_widget)
+      (power_widget))
+    ;; Quote Library Full-Width Bottom Section
+    (quote_library_widget)))
+
+(defwindow dashboard
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "780px"
+                      :height "540px"
+                      :anchor "center")
+  :stacking "fg"
+  :wm-ignore false
+  (dashboard_layout))

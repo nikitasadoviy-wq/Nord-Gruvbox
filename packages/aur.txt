@@ -1,0 +1,3 @@
+eww
+nordic-theme
+papirus-icon-theme

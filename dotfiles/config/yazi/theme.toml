@@ -1,0 +1,14 @@
+[manager]
+cwd = { fg = "#88c0d0", bold = true }
+hovered = { fg = "#282828", bg = "#81a1c1", bold = true }
+preview_hovered = { underline = true }
+find_keyword = { fg = "#fabd2f", italic = true }
+border_symbol = "│"
+border_style = { fg = "#5e81ac" }
+
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "#3c3836", bg = "#3c3836" }
+mode_normal = { fg = "#282828", bg = "#81a1c1", bold = true }
+mode_select = { fg = "#282828", bg = "#b8bb26", bold = true }

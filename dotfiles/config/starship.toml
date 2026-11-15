@@ -1,0 +1,47 @@
+format = """
+[](#3c3836)$os$username[](bg:#5e81ac fg:#3c3836)$directory[](fg:#5e81ac bg:#458588)$git_branch$git_status[](fg:#458588 bg:#3c3836)$c$rust$python[ ](fg:#3c3836)$line_break$character"""
+
+[os]
+disabled = false
+style = "bg:#3c3836 fg:#ebdbb2"
+
+[os.symbols]
+Arch = " "
+
+[username]
+show_always = true
+style_user = "bg:#3c3836 fg:#ebdbb2"
+format = '[$user ]($style)'
+
+[directory]
+style = "fg:#282828 bg:#5e81ac bold"
+format = "[ $path ]($style)"
+truncation_length = 3
+
+[git_branch]
+symbol = ""
+style = "bg:#458588 fg:#282828 bold"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#458588 fg:#282828"
+format = '[$all_status$ahead_behind ]($style)'
+
+[c]
+symbol = " "
+style = "bg:#3c3836 fg:#88c0d0"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#3c3836 fg:#fabd2f"
+format = '[ $symbol ($version) ]($style)'
+
+[python]
+symbol = ""
+style = "bg:#3c3836 fg:#b8bb26"
+format = '[ $symbol ($version) ]($style)'
+
+[character]
+success_symbol = "[❯](bold #81a1c1)"
+error_symbol = "[❯](bold #fb4934)"

@@ -1,0 +1,55 @@
+# Термінал
+super + Return
+	alacritty
+
+# Лаунчер програм
+super + d
+	rofi -show drun
+
+# Файловий менеджер Yazi
+super + e
+	alacritty -e yazi
+
+# Браузер
+super + b
+	firefox
+
+# Eww Dashboard + Quote Library
+super + g
+	eww open --toggle dashboard
+
+# Перезавантажити sxhkd
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# Вийти або перезавантажити bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# Закрити або вбити вікно
+super + {_,shift + }q
+	bspc node -{c,k}
+
+# Перемикання стану вікна (tiled, floating, fullscreen)
+super + {t,s,f}
+	bspc node -t {tiled,floating,fullscreen}
+
+# Фокус та переміщення вікон
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# Робочі столи
+super + {_,shift + }{1-7}
+	bspc {desktop -f,node -d} '^{1-7}'
+
+# Скріншот області
+Print
+	maim -s | tee ~/Pictures/shot_$(date +%s).png | xclip -selection clipboard -t image/png
+
+# Гучність
+XF86AudioRaiseVolume
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+XF86AudioLowerVolume
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+XF86AudioMute
+	wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
