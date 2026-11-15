@@ -6,6 +6,10 @@ super + Return
 super + d
 	rofi -show drun
 
+# Історія буфера обміну (Greenclip)
+super + v
+	rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
 # Файловий менеджер Yazi
 super + e
 	alacritty -e yazi
@@ -42,9 +46,12 @@ super + {_,shift + }{h,j,k,l}
 super + {_,shift + }{1-7}
 	bspc {desktop -f,node -d} '^{1-7}'
 
-# Скріншот області
+# Скріншотер (Flameshot GUI та повний екран)
 Print
-	maim -s | tee ~/Pictures/shot_$(date +%s).png | xclip -selection clipboard -t image/png
+	flameshot gui
+
+shift + Print
+	flameshot full -p ~/Pictures -c
 
 # Гучність
 XF86AudioRaiseVolume
