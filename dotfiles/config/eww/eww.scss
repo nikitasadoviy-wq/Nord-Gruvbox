@@ -171,3 +171,53 @@ scale trough {
 .q-action-btn.next-btn:hover {
   background-color: #88c0d0;
 }
+
+.weather-card {
+  background-color: #282828;
+  border: 1px solid #88c0d0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.weather-temp {
+  font-size: 32px;
+  font-weight: bold;
+  color: #88c0d0;
+}
+
+.weather-desc {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ebdbb2;
+}
+
+.weather-sub {
+  font-size: 11px;
+  color: #a89984;
+  margin-top: 2px;
+}
+
+.forecast-day {
+  background-color: #1d2021;
+  border: 1px solid #3c3836;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 6px;
+}
+
+.f-date {
+  font-size: 10px;
+  color: #81a1c1;
+  font-weight: bold;
+}
+
+.f-temp {
+  font-size: 11px;
+  color: #fabd2f;
+  margin: 2px 0;
+}
+
+.f-desc {
+  font-size: 9px;
+  color: #a89984;
+}
