@@ -1,3 +1,4 @@
+rofi-greenclip
 eww
 nordic-theme
 papirus-icon-theme
