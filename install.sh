@@ -2,10 +2,9 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
 echo "========================================="
-echo "   Nord-Gruvbox Arch Linux Installer     "
+echo "    Nord-Gruvbox Arch Linux Installer    "
 echo "========================================="
 echo "Обери профіль системи:"
 echo "  1) VMware Virtual Machine"
@@ -51,39 +50,64 @@ if [[ -f "$REPO_DIR/packages/aur.txt" ]]; then
     grep -vE '^\s*#|^\s*$' "$REPO_DIR/packages/aur.txt" | paru -S --needed --noconfirm -
 fi
 
-echo "[4/6] Бекап старих конфігів та деплой нових..."
-mkdir -p "$BACKUP_DIR" "$HOME/.config" "$HOME/Pictures"
+echo "[4/6] Радикальне очищення старих конфігів та деплой нових..."
+mkdir -p "$HOME/.config" "$HOME/Pictures" "$HOME/.cache/nord-gruvbox"
 
+# Список усіх конфіг-папок для управління
+CONFIGS=(bspwm sxhkd alacritty eww polybar picom rofi dunst nvim yazi flameshot greenclip)
+
+# Повне видалення старих папок без бекапів
+for cfg in "${CONFIGS[@]}"; do
+    if [ -d "$HOME/.config/$cfg" ]; then
+        rm -rf "$HOME/.config/$cfg"
+        echo "  [-] Видалено стару папку: ~/.config/$cfg"
+    fi
+done
+
+# Копіювання файлів із dotfiles/home/ (якщо існують)
 for file in "$REPO_DIR/dotfiles/home/".*; do
     [[ -f "$file" ]] || continue
     base="$(basename "$file")"
-    [[ -e "$HOME/$base" ]] && mv "$HOME/$base" "$BACKUP_DIR/"
+    [[ -e "$HOME/$base" ]] && rm -f "$HOME/$base"
     cp "$file" "$HOME/$base"
 done
 
-for dir in "$REPO_DIR/dotfiles/config/"*; do
-    [[ -e "$dir" ]] || continue
-    base="$(basename "$dir")"
-    [[ -e "$HOME/.config/$base" ]] && mv "$HOME/.config/$base" "$BACKUP_DIR/"
-    cp -r "$dir" "$HOME/.config/$base"
+# Копіювання нових конфігів із репозиторію
+for cfg in "${CONFIGS[@]}"; do
+    if [ -d "$REPO_DIR/dotfiles/config/$cfg" ]; then
+        cp -r "$REPO_DIR/dotfiles/config/$cfg" "$HOME/.config/"
+        echo "  [+] Встановлено новий конфіг: $cfg"
+    fi
 done
 
-# Видача прав на виконання
-chmod +x "$HOME/.xinitrc"
+if [ -f "$REPO_DIR/dotfiles/config/starship.toml" ]; then
+    cp "$REPO_DIR/dotfiles/config/starship.toml" "$HOME/.config/starship.toml"
+    echo "  [+] Встановлено файл: starship.toml"
+fi
+
+echo "[4.5/6] Динамічне налаштування шляхів та прав виконання (+x)..."
+if [[ -f "$HOME/.config/flameshot/flameshot.ini" ]]; then
+    sed -i "s|savePath=.*|savePath=$HOME/Pictures|g" "$HOME/.config/flameshot/flameshot.ini"
+fi
+
+if [[ -f "$HOME/.config/greenclip/greenclip.toml" ]]; then
+    sed -i "s|/home/nikituch|$HOME|g" "$HOME/.config/greenclip/greenclip.toml"
+fi
+
+# Універсальна видача прав на виконання для скриптів
+[[ -f "$HOME/.xinitrc" ]] && chmod +x "$HOME/.xinitrc"
 [[ -f "$HOME/.config/bspwm/bspwmrc" ]] && chmod +x "$HOME/.config/bspwm/bspwmrc"
 [[ -f "$HOME/.config/polybar/launch.sh" ]] && chmod +x "$HOME/.config/polybar/launch.sh"
-[[ -f "$HOME/.config/eww/scripts/quote_manager.py" ]] && chmod +x "$HOME/.config/eww/scripts/quote_manager.py"
-[[ -f "$HOME/.config/eww/scripts/weather_engine.py" ]] && chmod +x "$HOME/.config/eww/scripts/weather_engine.py" 
-[[ -f "$HOME/.config/eww/scripts/sysinfo.sh" ]] && chmod +x "$HOME/.config/eww/scripts/sysinfo.sh"
+
+if [ -d "$HOME/.config/eww/scripts" ]; then
+    chmod +x "$HOME/.config/eww/scripts/"*.py
+    chmod +x "$HOME/.config/eww/scripts/"*.sh
+    echo "  [+] Проставлено права +x для всіх скриптів Eww"
+fi
 
 echo "[5/6] Передналаштування софту (LazyVim, Zsh, Picom, GTK)..."
 if [[ -f "$HOME/.config/picom/picom.conf" ]] && [[ "$PROFILE" == "vmware" ]]; then
     sed -i 's/backend = "glx"/backend = "xrender"/g' "$HOME/.config/picom/picom.conf"
-fi
-
-# Ініціалізація LazyVim поверх базового шаблону, якщо плагіни ще не стягнуті
-if [[ ! -d "$HOME/.local/share/nvim/lazy" ]]; then
-    echo "Підготовка середовища Neovim + LazyVim..."
 fi
 
 if [[ "$SHELL" != "/usr/bin/zsh" ]]; then
