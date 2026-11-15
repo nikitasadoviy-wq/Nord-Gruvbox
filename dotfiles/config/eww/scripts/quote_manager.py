@@ -3,6 +3,8 @@ import json
 import os
 import random
 import sys
+import urllib.request
+import urllib.parse
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 QUOTES_FILE = os.path.join(BASE_DIR, "quotes.json")
@@ -16,13 +18,18 @@ ICONS = {
     "Books": "📚",
     "Real People": "👤",
     "Technology": "💻",
+    "WikiSync": "🌐",
 }
 
-
 def load_quotes():
+    if not os.path.exists(QUOTES_FILE):
+        return []
     with open(QUOTES_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def save_quotes(quotes):
+    with open(QUOTES_FILE, "w", encoding="utf-8") as f:
+        json.dump(quotes, f, ensure_ascii=False, indent=2)
 
 def load_state(quotes):
     os.makedirs(STATE_DIR, exist_ok=True)
@@ -37,12 +44,73 @@ def load_state(quotes):
     except Exception:
         return {"active_cat": "All", "current_id": default_id, "favorites": []}
 
-
 def save_state(state):
     os.makedirs(STATE_DIR, exist_ok=True)
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
 
+def sync_from_wikipedia():
+    """Синхронізація цікавої цитати/факту з української Вікіпедії через Open API"""
+    try:
+        url = "https://uk.wikipedia.org/api/rest_v1/page/random/summary"
+        req = urllib.request.Request(url, headers={'User-Agent': 'NordGruvboxRice/1.0'})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            extract = data.get("extract", "")
+            title = data.get("title", "Wikipedia")
+            if not extract:
+                return False
+            
+            # Беремо перше речення як «цитату/факт»
+            sentence = extract.split(".")[0] + "."
+            new_quote = {
+                "id": f"wiki_{data.get('pageid', random.randint(1000,9999))}",
+                "category": "Technology",
+                "original": sentence,
+                "translation": sentence, # Українська Вікіпедія вже українською
+                "author": title,
+                "source": "Wikipedia UA"
+            }
+            
+            quotes = load_quotes()
+            # Додаємо, якщо такого ID ще немає
+            if not any(q["id"] == new_quote["id"] for q in quotes):
+                quotes.insert(0, new_quote)
+                save_quotes(quotes)
+                return True
+    except Exception:
+        pass
+    return False
+
+def sync_from_fandom(wiki_subdomain="halo"):
+    """Синхронізація цитат/статей із Fandom (наприклад, halo.fandom.com)"""
+    try:
+        url = f"https://{wiki_subdomain}.fandom.com/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json"
+        req = urllib.request.Request(url, headers={'User-Agent': 'NordGruvboxRice/1.0'})
+        with urllib.request.urlopen(req, timeout=3) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            pages = data.get("query", {}).get("random", [])
+            if not pages:
+                return False
+            page_title = pages[0]["title"]
+            
+            new_quote = {
+                "id": f"fandom_{pages[0]['id']}",
+                "category": "Games",
+                "original": f"Lore entry: {page_title}",
+                "translation": f"Запис лору: {page_title}",
+                "author": f"{wiki_subdomain.capitalize()} Fandom",
+                "source": f"{wiki_subdomain}.fandom.wiki"
+            }
+            
+            quotes = load_quotes()
+            if not any(q["id"] == new_quote["id"] for q in quotes):
+                quotes.insert(0, new_quote)
+                save_quotes(quotes)
+                return True
+    except Exception:
+        pass
+    return False
 
 def get_filtered(quotes, state):
     cat = state.get("active_cat", "All")
@@ -53,7 +121,6 @@ def get_filtered(quotes, state):
         return [q for q in quotes if q["id"] in favs]
     return [q for q in quotes if q["category"] == cat]
 
-
 def build_output(quotes, state):
     pool = get_filtered(quotes, state)
     favs = set(state.get("favorites", []))
@@ -61,10 +128,10 @@ def build_output(quotes, state):
         return {
             "active_cat": state.get("active_cat", "All"),
             "id": "",
-            "original": "No quotes in this category yet.",
-            "translation": "У цій категорії поки немає цитат. Додай кілька в обране!",
+            "original": "No quotes in this category yet. Click Sync!",
+            "translation": "У цій категорії поки пусто. Натисни кнопку синхронізації з Мережею!",
             "author": "Quote Library",
-            "source": "Local Storage",
+            "source": "Offline Storage",
             "category_icon": "★",
             "is_fav": False,
             "fav_count": len(favs),
@@ -87,7 +154,6 @@ def build_output(quotes, state):
         "is_fav": current["id"] in favs,
         "fav_count": len(favs),
     }
-
 
 def main():
     quotes = load_quotes()
@@ -121,8 +187,23 @@ def main():
             state["favorites"] = favs
             save_state(state)
 
-    print(json.dumps(build_output(quotes, state), ensure_ascii=False))
+    elif cmd == "sync_wiki":
+        sync_from_wikipedia()
+        quotes = load_quotes()
+        pool = get_filtered(quotes, state)
+        if pool:
+            state["current_id"] = pool[0]["id"]
+        save_state(state)
 
+    elif cmd == "sync_fandom":
+        sync_from_fandom("halo")
+        quotes = load_quotes()
+        pool = get_filtered(quotes, state)
+        if pool:
+            state["current_id"] = pool[0]["id"]
+        save_state(state)
+
+    print(json.dumps(build_output(quotes, state), ensure_ascii=False))
 
 if __name__ == "__main__":
     main()
