@@ -73,6 +73,7 @@ chmod +x "$HOME/.xinitrc"
 [[ -f "$HOME/.config/bspwm/bspwmrc" ]] && chmod +x "$HOME/.config/bspwm/bspwmrc"
 [[ -f "$HOME/.config/polybar/launch.sh" ]] && chmod +x "$HOME/.config/polybar/launch.sh"
 [[ -f "$HOME/.config/eww/scripts/quote_manager.py" ]] && chmod +x "$HOME/.config/eww/scripts/quote_manager.py"
+[[ -f "$HOME/.config/eww/scripts/weather_engine.py" ]] && chmod +x "$HOME/.config/eww/scripts/weather_engine.py" 
 [[ -f "$HOME/.config/eww/scripts/sysinfo.sh" ]] && chmod +x "$HOME/.config/eww/scripts/sysinfo.sh"
 
 echo "[5/6] Передналаштування софту (LazyVim, Zsh, Picom, GTK)..."
