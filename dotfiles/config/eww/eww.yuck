@@ -78,18 +78,24 @@
              :xalign 0
              :text "${quote_state.translation}"))
 
-    ;; Footer: Author & Source + Controls (Next, Favorite)
+    ;; Footer: Author & Source + Sync & Controls
     (box :class "quote-footer" :orientation "h" :space-evenly false
       (box :orientation "v" :hexpand true :space-evenly false
         (label :class "quote-author" :xalign 0 :text "— ${quote_state.author}")
         (label :class "quote-source" :xalign 0 :text "${quote_state.category_icon} ${quote_state.source}"))
-      (box :orientation "h" :spacing 8 :halign "end"
+      (box :orientation "h" :spacing 6 :halign "end"
+        (button :class "q-action-btn sync-btn"
+                :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py sync_wiki)"
+                "🌐 Wiki")
+        (button :class "q-action-btn sync-btn"
+                :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py sync_fandom)"
+                "🎮 Fandom")
         (button :class {quote_state.is_fav ? "q-action-btn fav-active" : "q-action-btn"}
                 :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py toggle_fav)"
-                {quote_state.is_fav ? "★ В обраному" : "☆ В обране"})
+                {quote_state.is_fav ? "★" : "☆"})
         (button :class "q-action-btn next-btn"
                 :onclick "eww update quote_state=$(~/.config/eww/scripts/quote_manager.py next)"
-                "↻ Наступна")))))
+                "↻")))))
 
 (defwidget dashboard_layout []
   (box :class "dashboard-container" :orientation "v" :space-evenly false :spacing 14
